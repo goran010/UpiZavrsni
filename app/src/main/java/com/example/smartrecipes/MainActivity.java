@@ -50,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // Update the list of recipes when the activity resumes
+        updateRecipeList();
+    }
+
+    private void updateRecipeList() {
+        // Clear and update the adapter with the latest list of recipes
         adapter.clear();
         adapter.addAll(recipeRepository.getAllRecipes());
         adapter.notifyDataSetChanged();
