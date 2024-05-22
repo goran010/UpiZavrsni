@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,6 @@ public class RecipeRepository {
                 int instructionsIndex = cursor.getColumnIndex("instructions");
                 int idIndex = cursor.getColumnIndex("id");
 
-                // Provjera je li stupac pronađen
                 if (nameIndex != -1 && countryIndex != -1 && ingredientsIndex != -1 && instructionsIndex != -1 && idIndex != -1) {
                     Recipe recipe = new Recipe(
                             cursor.getString(nameIndex),
@@ -53,5 +51,51 @@ public class RecipeRepository {
             cursor.close();
         }
         return recipes;
+    }
+
+    public List<String> getAllRecipeNames() {
+        List<Recipe> recipes = getAllRecipes();
+        List<String> recipeNames = new ArrayList<>();
+        for (Recipe recipe : recipes) {
+            recipeNames.add(recipe.getName());
+        }
+        return recipeNames;
+    }
+
+    public Recipe getRecipeByName(String name) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String[] selectionArgs = {name};
+        Cursor cursor = db.query("recipes", null, "name = ?", selectionArgs, null, null, null);
+
+        Recipe recipe = null;
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int nameIndex = cursor.getColumnIndex("name");
+                int countryIndex = cursor.getColumnIndex("country");
+                int ingredientsIndex = cursor.getColumnIndex("ingredients");
+                int instructionsIndex = cursor.getColumnIndex("instructions");
+                int idIndex = cursor.getColumnIndex("id");
+
+                if (nameIndex != -1 && countryIndex != -1 && ingredientsIndex != -1 && instructionsIndex != -1 && idIndex != -1) {
+                    recipe = new Recipe(
+                            cursor.getString(nameIndex),
+                            cursor.getString(countryIndex),
+                            cursor.getString(ingredientsIndex),
+                            cursor.getString(instructionsIndex)
+                    );
+                    recipe.setId(cursor.getInt(idIndex));
+                }
+            }
+            cursor.close();
+        }
+
+        return recipe;
+    }
+
+    public void deleteRecipe(Recipe recipe) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String[] selectionArgs = {String.valueOf(recipe.getId())};
+        db.delete("recipes", "id = ?", selectionArgs);
     }
 }

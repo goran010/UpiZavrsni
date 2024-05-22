@@ -33,10 +33,16 @@
         android:minHeight="48dp"
         android:hint="Instructions" />
 
-    <Button
+    <ImageButton
         android:id="@+id/button_save"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:adjustViewBounds="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/button_save_description"
+        android:minWidth="48dp"
         android:minHeight="48dp"
-        android:text="Save" />
+        android:padding="16dp"
+        android:src="@drawable/baseline_add_24" />
 </LinearLayout>

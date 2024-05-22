@@ -2,8 +2,8 @@ package com.example.smartrecipes;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AddRecipeActivity extends AppCompatActivity {
@@ -22,7 +22,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         final EditText editTextIngredients = findViewById(R.id.edit_text_ingredients);
         final EditText editTextInstructions = findViewById(R.id.edit_text_instructions);
 
-        Button buttonSave = findViewById(R.id.button_save);
+        ImageButton buttonSave = findViewById(R.id.button_save);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

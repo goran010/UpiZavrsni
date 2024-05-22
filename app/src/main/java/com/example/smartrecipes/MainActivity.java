@@ -5,15 +5,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
+import android.util.SparseBooleanArray;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecipeRepository recipeRepository;
-    private ArrayAdapter<Recipe> adapter;
+    private ArrayAdapter<String> adapter;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +23,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recipeRepository = new RecipeRepository(this);
-        List<Recipe> recipes = recipeRepository.getAllRecipes();
+        List<String> recipeNames = recipeRepository.getAllRecipeNames();
 
-        ListView listView = findViewById(R.id.list_view_recipes);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, recipes);
+        listView = findViewById(R.id.list_view_recipes);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, recipeNames);
         listView.setAdapter(adapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        Button buttonAddRecipe = findViewById(R.id.button_add_recipe);
+        ImageButton buttonAddRecipe = findViewById(R.id.button_add_recipe);
         buttonAddRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,13 +39,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ImageButton buttonDeleteRecipe = findViewById(R.id.button_delete_recipe);
+        buttonDeleteRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteSelectedRecipes();
+            }
+        });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Recipe selectedRecipe = adapter.getItem(position);
-                Intent intent = new Intent(MainActivity.this, ViewRecipeActivity.class);
-                intent.putExtra("recipeId", selectedRecipe.getId());
-                startActivity(intent);
+                String selectedRecipeName = adapter.getItem(position);
+                Recipe selectedRecipe = recipeRepository.getRecipeByName(selectedRecipeName);
+                if (selectedRecipe != null) {
+                    Intent intent = new Intent(MainActivity.this, ViewRecipeActivity.class);
+                    intent.putExtra("recipeId", selectedRecipe.getId());
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -50,14 +64,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Update the list of recipes when the activity resumes
         updateRecipeList();
     }
 
     private void updateRecipeList() {
-        // Clear and update the adapter with the latest list of recipes
         adapter.clear();
-        adapter.addAll(recipeRepository.getAllRecipes());
+        adapter.addAll(recipeRepository.getAllRecipeNames());
         adapter.notifyDataSetChanged();
+    }
+
+    private void deleteSelectedRecipes() {
+        SparseBooleanArray checkedItemPositions = listView.getCheckedItemPositions();
+        int itemCount = adapter.getCount();
+
+        for (int i = itemCount - 1; i >= 0; i--) {
+            if (checkedItemPositions.get(i)) {
+                String selectedRecipeName = adapter.getItem(i);
+                Recipe selectedRecipe = recipeRepository.getRecipeByName(selectedRecipeName);
+                if (selectedRecipe != null) {
+                    recipeRepository.deleteRecipe(selectedRecipe);
+                }
+            }
+        }
+
+        updateRecipeList();
     }
 }
