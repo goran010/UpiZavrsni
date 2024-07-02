@@ -1,2 +1,2 @@
 # SmartRecipes_UPI
-Projekt iz kolegija Uvod u programsko inžinjerstvo
+Završni projekt iz kolegija Uvod u programsko inžinjerstvo
