@@ -4,6 +4,7 @@
     package="com.example.smartrecipes">
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -23,9 +24,21 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity" android:exported="true" />
-        <activity android:name=".AddRecipeActivity" />
-        <activity android:name=".ViewRecipeActivity" />
-    </application>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
 
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="true" />
+
+        <activity android:name=".MainActivity"
+            android:exported="true" />
+
+        <activity android:name=".AddRecipeActivity"
+            android:exported="true" />
+
+        <activity android:name=".ViewRecipeActivity"
+            android:exported="false" />
+    </application>
 </manifest>
