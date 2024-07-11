@@ -1,2 +1,2 @@
 # SmartRecipes_UPI
-Završni projekt iz kolegija Uvod u programsko inžinjerstvo
+Final Project for the Course Introduction to Software Engineering (hrv. Uvod u programsko inžinjerstvo). Android Studio app
