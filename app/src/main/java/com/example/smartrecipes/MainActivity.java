@@ -47,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ImageButton buttonSearchRecipe = findViewById(R.id.button_search_recipe);
+        buttonSearchRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SearchRecipeActivity.class);
+                startActivity(intent);
+            }
+        });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

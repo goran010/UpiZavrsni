@@ -8,10 +8,12 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@drawable/logo_mali"
-        android:layout_marginBottom="24dp" />
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="24dp"
+        android:padding="8dp" />
 
     <EditText
         android:id="@+id/edit_text_username"
