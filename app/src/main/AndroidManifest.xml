@@ -1,21 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.smartrecipes">
-    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name=".MyApplication"
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SmartRecipes"
-        tools:targetApi="31">
+        android:theme="@style/Theme.SmartRecipes">
 
         <activity
             android:name=".SplashActivity"
@@ -26,21 +18,12 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".AddRecipeActivity" />
+        <activity android:name=".ViewRecipeActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".SearchRecipeActivity" />
 
-        <activity
-            android:name=".SignUpActivity"
-            android:exported="true" />
-
-        <activity android:name=".MainActivity"
-            android:exported="true" />
-
-        <activity android:name=".AddRecipeActivity"
-            android:exported="true" />
-
-        <activity android:name=".ViewRecipeActivity"
-            android:exported="false" />
     </application>
 </manifest>

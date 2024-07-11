@@ -2,18 +2,13 @@ package com.example.smartrecipes;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import android.util.SparseBooleanArray;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,17 +16,11 @@ public class MainActivity extends AppCompatActivity {
     private RecipeRepository recipeRepository;
     private ArrayAdapter<String> adapter;
     private ListView listView;
-    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        fetchData();
 
         recipeRepository = new RecipeRepository(this);
         List<String> recipeNames = recipeRepository.getAllRecipeNames();
@@ -55,6 +44,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 deleteSelectedRecipes();
+            }
+        });
+
+        ImageButton buttonSearchRecipe = findViewById(R.id.button_search_recipe);
+        buttonSearchRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SearchRecipeActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -97,22 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
         updateRecipeList();
-    }
-
-    private void fetchData() {
-        RetrofitInstance.getApiService().getData().enqueue(new Callback<List<MyData>>() {
-            @Override
-            public void onResponse(Call<List<MyData>> call, Response<List<MyData>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    recyclerView.setAdapter(new MyAdapter(response.body()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<MyData>> call, Throwable t) {
-                // Handle failure
-            }
-        });
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AddRecipeActivity extends AppCompatActivity {
@@ -26,14 +27,18 @@ public class AddRecipeActivity extends AppCompatActivity {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = editTextName.getText().toString();
-                String country = editTextCountry.getText().toString();
-                String ingredients = editTextIngredients.getText().toString();
-                String instructions = editTextInstructions.getText().toString();
+                String name = editTextName.getText().toString().trim();
+                String country = editTextCountry.getText().toString().trim();
+                String ingredients = editTextIngredients.getText().toString().trim();
+                String instructions = editTextInstructions.getText().toString().trim();
 
-                Recipe recipe = new Recipe(name, country, ingredients, instructions);
-                recipeRepository.addRecipe(recipe);
-                finish();
+                if (name.isEmpty() || country.isEmpty() || ingredients.isEmpty() || instructions.isEmpty()) {
+                    Toast.makeText(AddRecipeActivity.this, "All fields must be filled in", Toast.LENGTH_SHORT).show();
+                } else {
+                    Recipe recipe = new Recipe(name, country, ingredients, instructions);
+                    recipeRepository.addRecipe(recipe);
+                    finish();
+                }
             }
         });
     }
