@@ -26,6 +26,14 @@
         <activity android:name=".MainActivity" android:exported="true" />
         <activity android:name=".AddRecipeActivity" />
         <activity android:name=".ViewRecipeActivity" />
+
+        <!-- Declare the new LoginActivity -->
+        <activity android:name=".LoginActivity"
+            android:exported="true" />
+
+        <!-- Declare the new SignUpActivity -->
+        <activity android:name=".SignUpActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
