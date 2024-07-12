@@ -9,10 +9,10 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.SparseBooleanArray;
-import java.util.List;
 import android.util.Log;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private RecipeRepository recipeRepository;
     private ArrayAdapter<String> adapter;
     private ListView listView;
+    private boolean isDataFetched = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +37,10 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        // Call method to fetch recipes from API
-        fetchRecipesFromApi();
+        // Call method to fetch recipes from API if not fetched already
+        if (!isDataFetched) {
+            fetchRecipesFromApi();
+        }
 
         ImageButton buttonAddRecipe = findViewById(R.id.button_add_recipe);
         buttonAddRecipe.setOnClickListener(new View.OnClickListener() {
@@ -123,12 +126,18 @@ public class MainActivity extends AppCompatActivity {
                     List<String> mealNames = new ArrayList<>();
                     for (Meal meal : meals) {
                         Log.i("myTag", "Meal: " + meal.getStrMeal());
-                        mealNames.add(meal.getStrMeal());
-                        // Log other meal details as needed
+
+                        // Check if the meal is already in the database
+                        if (recipeRepository.getRecipeByName(meal.getStrMeal()) == null) {
+                            Recipe recipe = new Recipe(meal.getStrMeal(), meal.getStrArea(), "meal.getStrIngredients()", meal.getStrInstructions());
+                            recipeRepository.addRecipe(recipe);
+                            mealNames.add(meal.getStrMeal());
+                        }
                     }
                     // Update the ListView with the fetched recipes
                     adapter.addAll(mealNames);
                     adapter.notifyDataSetChanged();
+                    isDataFetched = true;
                 } else {
                     Log.e("myTag", "Failed to get response: " + response.errorBody().toString());
                 }
@@ -142,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 }
+
+
 
 
 
