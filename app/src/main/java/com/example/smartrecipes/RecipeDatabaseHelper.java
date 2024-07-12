@@ -1,8 +1,10 @@
 package com.example.smartrecipes;
 
+//Class that manages creation and updating of the recipe database
+
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteDatabase; //Represents the database and provides methods for database management
+import android.database.sqlite.SQLiteOpenHelper; //Helper class to manage database creation and version management
 
 public class RecipeDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "recipes.db";
@@ -13,7 +15,7 @@ public class RecipeDatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase db) { //Create table named recipes with specified columns
         db.execSQL("CREATE TABLE recipes (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "name TEXT, " +
@@ -24,7 +26,7 @@ public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS recipes");
+        db.execSQL("DROP TABLE IF EXISTS recipes"); //drop existing recipes if table exists already
         onCreate(db);
     }
 }

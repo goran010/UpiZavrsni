@@ -1,5 +1,13 @@
 package com.example.smartrecipes;
 
+
+/*
+* Class that represents a meal and includes several properties that describe different details about the meal
+* (ID, name, category...); @SerializedName links JSON  keys to these properties when converting JSON data into
+* Java objects using the Gson library; each property has it's getter method to retrieve and setter method to change
+* it's value
+*/
+
 import com.google.gson.annotations.SerializedName;
 
 public class Meal {
@@ -21,7 +29,6 @@ public class Meal {
     @SerializedName("strInstructions")
     private String strInstructions;
 
-    // Other fields as needed
 
     public String getIdMeal() {
         return idMeal;
@@ -71,6 +78,5 @@ public class Meal {
         this.strInstructions = strInstructions;
     }
 
-    // Implement getters and setters for other fields as needed
 }
 

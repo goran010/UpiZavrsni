@@ -13,18 +13,18 @@ public class ViewRecipeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_recipe);
+        setContentView(R.layout.activity_view_recipe); //Layout (activity_view_recipe)
 
-        // Initialize the RecipeRepository
+        //Initialize the RecipeRepository
         recipeRepository = new RecipeRepository(this);
 
-        // Retrieve recipeId from intent
+        //Retrieve recipeId from intent; default value is -1 if recipeID is not found in Intent
         int recipeId = getIntent().getIntExtra("recipeId", -1);
 
-        // Find the recipe with the matching recipeId
+        //Find the recipe with the matching recipeId
         Recipe recipe = findRecipeById(recipeId);
 
-        // If recipe found, populate the views
+        //If recipe found, populate the views
         if (recipe != null) {
             TextView textViewName = findViewById(R.id.text_view_name);
             TextView textViewCountry = findViewById(R.id.text_view_country);
@@ -37,30 +37,30 @@ public class ViewRecipeActivity extends AppCompatActivity {
             textViewInstructions.setText(recipe.getInstructions());
         }
 
-        // Setup the Toolbar
+        //Setup the Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Enable the Up button
+        //Navigate back to previous screen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    // Method to find a recipe by its ID in the repository
+    //Find recipe by its ID in the repository
     private Recipe findRecipeById(int recipeId) {
-        for (Recipe r : recipeRepository.getAllRecipes()) {
+        for (Recipe r : recipeRepository.getAllRecipes()) { //Iterate over all recipes in the repository
             if (r.getId() == recipeId) {
                 return r;
             }
         }
-        return null; // Return null if recipe not found
+        return null; //Null if recipe not found
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // Respond to the action bar's Up/Home button
-                onBackPressed(); // Navigate back
+                //Respond to the action bar's Up/Home button
+                onBackPressed(); //Return to previous activity
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -1,5 +1,8 @@
 package com.example.smartrecipes;
 
+//Class that is used for creating Recipe objects with attributes and provides
+//methods to access and modify these attributes
+
 public class Recipe {
     private int id;
     private String name;
