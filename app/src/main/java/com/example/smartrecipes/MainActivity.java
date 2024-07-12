@@ -10,15 +10,9 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.SparseBooleanArray;
 import java.util.List;
-
-
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Call method to fetch recipes from API
         fetchRecipesFromApi();
-
 
         ImageButton buttonAddRecipe = findViewById(R.id.button_add_recipe);
         buttonAddRecipe.setOnClickListener(new View.OnClickListener() {
@@ -127,10 +120,15 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("myTag", response.toString());
 
                     List<Meal> meals = response.body().getMeals();
+                    List<String> mealNames = new ArrayList<>();
                     for (Meal meal : meals) {
                         Log.i("myTag", "Meal: " + meal.getStrMeal());
+                        mealNames.add(meal.getStrMeal());
                         // Log other meal details as needed
                     }
+                    // Update the ListView with the fetched recipes
+                    adapter.addAll(mealNames);
+                    adapter.notifyDataSetChanged();
                 } else {
                     Log.e("myTag", "Failed to get response: " + response.errorBody().toString());
                 }
@@ -143,9 +141,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }
+
 
 
 
