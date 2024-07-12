@@ -11,6 +11,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.SparseBooleanArray;
 import java.util.List;
 
+
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import java.util.ArrayList;
+import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private RecipeRepository recipeRepository;
@@ -29,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, recipeNames);
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+        // Call method to fetch recipes from API
+        fetchRecipesFromApi();
+
 
         ImageButton buttonAddRecipe = findViewById(R.id.button_add_recipe);
         buttonAddRecipe.setOnClickListener(new View.OnClickListener() {
@@ -98,4 +114,39 @@ public class MainActivity extends AppCompatActivity {
 
         updateRecipeList();
     }
+
+    private void fetchRecipesFromApi() {
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        Call<ApiCallModel> call = apiService.getRecipes("egg"); // Replace "egg" with your search query
+
+        call.enqueue(new Callback<ApiCallModel>() {
+            @Override
+            public void onResponse(Call<ApiCallModel> call, Response<ApiCallModel> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Log the entire response object
+                    Log.i("myTag", response.toString());
+
+                    List<Meal> meals = response.body().getMeals();
+                    for (Meal meal : meals) {
+                        Log.i("myTag", "Meal: " + meal.getStrMeal());
+                        // Log other meal details as needed
+                    }
+                } else {
+                    Log.e("myTag", "Failed to get response: " + response.errorBody().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiCallModel> call, Throwable t) {
+                Log.e("myTag", "Error fetching data", t);
+                Toast.makeText(MainActivity.this, "Error fetching data: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 }
+
+
+
+
